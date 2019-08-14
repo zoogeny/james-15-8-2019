@@ -24,8 +24,6 @@ const cleanTempFile = (file) => {
 const upload = async (req, res) => {
     const file = req.file;
 
-    console.log(JSON.stringify(file));
-
     if (!(file.mimetype in ALLOWED_TYPES)) {
         res.status(415)
         res.json({

@@ -17,7 +17,20 @@ const getAllDocuments = () => {
 };
 
 const searchDocuments = (term) => {
-
+    const getDocumentPromise = new Promise((resolve, reject) => {
+        db.all(`
+            SELECT * FROM documents WHERE title LIKE $term;
+        `, {
+            "$term": `%${ term }%`
+        }, (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+    return getDocumentPromise;
 };
 
 const getDocumentById = (id) => {
@@ -58,7 +71,6 @@ const removeDocument = (id) => {
 const addDocument = (title, path, size) => {
     const addPromise = new Promise((resolve, reject) => {
         db.serialize(() => {
-            console.log(title, path, size);
             db.run(`
                 INSERT INTO documents (title, path, size)
                     VALUES ($title, $path, $size);`,

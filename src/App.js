@@ -13,7 +13,7 @@ import "./App.scss";
 
 const App = () => {
     const { messages, addMessage, addError, clearMessage } = useMessages();
-    const { searchResult, performSearchOnTerm } = useSearch(addError);
+    const { searchTerm, searchResult, performSearchOnTerm } = useSearch(addError);
     const { documentList, initiateUpload, initiateDelete } = useDocumentList(addError, addMessage);
 
     return (
@@ -29,6 +29,7 @@ const App = () => {
             </div>
             <DocumentList
                 documentList= { documentList }
+                searchTerm={ searchTerm }
                 searchResult={ searchResult.documents }
                 initiateDelete={ initiateDelete } />
         </div>

@@ -3,11 +3,25 @@ import { useState } from "react";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const useSearch = (errorHandler: () => {}) => {
+    const [searchTerm, setSearchTerm] = useState("");
     const [searchResult, setSearchResult] = useState([]);
 
     const performSearchOnTerm = async (term) => {
+        const trimmedSearchTerm = term.trim();
+        if (trimmedSearchTerm === searchTerm) {
+            return;
+        }
+
+        setSearchTerm(trimmedSearchTerm);
+
+        if (trimmedSearchTerm === "") {
+            setSearchTerm("");
+            setSearchResult([]);
+            return;
+        }
+
         const url = new URL(`${ API_URL }/search`);
-        const params = { term };
+        const params = { term: trimmedSearchTerm };
         Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
         const response = await fetch(url);
@@ -24,14 +38,10 @@ const useSearch = (errorHandler: () => {}) => {
             return;
         }
 
-        handleSearchResult(responseJson);
+        setSearchResult(responseJson);
     }
 
-    const handleSearchResult = (searchResult) => {
-        setSearchResult(searchResult);
-    }
-
-    return { searchResult, performSearchOnTerm }
+    return { searchTerm, searchResult, performSearchOnTerm }
 };
 
 export default useSearch;

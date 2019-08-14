@@ -73,6 +73,8 @@ NOTE: This project was bootstrapped with [Create React App](https://github.com/f
   (e.g. allowed mime types, max file sizes)
 * Transaction handling for multi-part server request (e.g. delete)
 * Integer ids for documents could be limiting long-term
+* Super simple search using SQL LIKE could be significantly improved
+* Would be nice to have a proper logging solution (other than console.log)
 
 ## Libraries
 

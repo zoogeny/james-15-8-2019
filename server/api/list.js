@@ -5,9 +5,9 @@ const list = async (req, res) => {
     try {
         documents = await getAllDocuments();
     } catch (error) {
-        res.status(500)
+        res.status(500);
         res.json({
-            "error": `Unable to fetch document list: ${ error }`
+            error: `Unable to fetch document list: ${ error }`
         });
         return;
     }
