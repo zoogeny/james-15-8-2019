@@ -24,6 +24,10 @@ function getDocumentItems(documentList, initiateDelete) {
 }
 
 const DocumentList = (props) => {
+    const documentElement = props.documentList.length
+        ? (<ul className="documents__list">{ getDocumentItems(props.documentList, props.initiateDelete) }</ul>)
+        : (<div className="documents__no-docs">There are no documents in the document storage</div>);
+
     return (
         <div className="documents">
             <div className="documents__header">
@@ -32,9 +36,7 @@ const DocumentList = (props) => {
                   Total Size: { getTotalSize(props.documentList) }
               </div>
             </div>
-            <ul className="documents__list">
-              { getDocumentItems(props.documentList, props.initiateDelete) }
-            </ul>
+            { documentElement }
         </div>
     );
 }
