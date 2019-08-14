@@ -10,8 +10,10 @@ const Document = (props) => {
     return (
         <div className="document">
             <h3 className="document__title">{ props.title }</h3>
-            <div className="document__size">{ getDocumentSize(props.size) }</div>
-            <button className="document__delete" onClick={ event => props.initiateDelete(props.id) }>Delete</button>
+            <div className="document__bottom">
+                <div className="document__size">{ getDocumentSize(props.size) }</div>
+                <button className="document__delete" onClick={ event => props.initiateDelete(props.id) }>Delete</button>
+            </div>
         </div>
     );
 }

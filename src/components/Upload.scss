@@ -1,5 +1,6 @@
-.upload {
+@import "../vars";
 
+.upload {
     &__input {
         width: 0.1px;
         height: 0.1px;
@@ -11,8 +12,10 @@
 
     &__label {
         cursor: pointer;
-        background-color: #339;
-        color: white;
+        border: $button-border;
+        background-color: $button-background-color;
+        color: $button-font-color;
+        font-weight: $button-font-weight;
         padding: 10px;
 
         &:focus {
@@ -21,11 +24,25 @@
         }
 
         &:hover {
-            opacity: 0.7;
+            opacity: $button-hover-opacity;
         }
 
         * {
             pointer-events: none;
+        }
+    }
+}
+
+@media(max-width: $phone-break-point) {
+    .upload {
+        order: 1;
+        width: 100%;
+
+        &__label {
+            display: block;
+            right: 0;
+            left: 0;
+            margin-bottom: 5px;
         }
     }
 }
