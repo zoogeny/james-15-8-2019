@@ -11,8 +11,9 @@
 # production
 /build
 
-# temporary storage
+# storage
 /uploads
+*.sqlite3
 
 # misc
 .DS_Store
