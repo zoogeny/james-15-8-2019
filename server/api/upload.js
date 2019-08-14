@@ -55,7 +55,7 @@ const upload = async (req, res) => {
 
     let id;
     try {
-        id = await addDocument(file.originalname, file.path, file.size);
+        id = await addDocument(file.originalname, file.path, file.size, detectedFileType.mime);
     } catch(error) {
         res.status(500)
         res.json({

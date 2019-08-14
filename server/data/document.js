@@ -68,16 +68,17 @@ const removeDocument = (id) => {
     return deletePromise;
 };
 
-const addDocument = (title, path, size) => {
+const addDocument = (title, path, size, mimetype) => {
     const addPromise = new Promise((resolve, reject) => {
         db.serialize(() => {
             db.run(`
-                INSERT INTO documents (title, path, size)
-                    VALUES ($title, $path, $size);`,
+                INSERT INTO documents (title, path, size, mimetype)
+                    VALUES ($title, $path, $size, $mimetype);`,
                 {
                     "$title": title,
                     "$path": path,
-                    "$size": size
+                    "$size": size,
+                    "$mimetype": mimetype
                 }, err => {
                     if (err) {
                         reject(err);

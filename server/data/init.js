@@ -13,7 +13,8 @@ db.serialize(() => {
             id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
             path TEXT NOT NULL,
-            size INTEGER NOT NULL
+            size INTEGER NOT NULL,
+            mimetype TEXT NOT NULL
         );
         `, err => {
             if (err) {

@@ -78,6 +78,9 @@ NOTE: both the api and client debug servers can be run simultaneously
   (e.g. delete from file system and delete from database)
 * Integer ids for documents could be limiting long-term, strings might be a better choice
 * Stable ids: right now id strategy is autoincrement in database so chance of two different images sharing the same id (although never at the same time). Maybe GUID would be a better id strategy.
+    * NOTE: this makes caching a bit of a problem since if two images can share
+      an id then there is a chance someone will see the wrong image from the
+      `/view` endpoint. This is really more of a bug than an need for improvement.
 * Super simple search using SQL LIKE could be significantly improved  
   (probably better to use dedicated search solution like ElasticSearch)
 * Would be nice to have a proper logging solution (other than console.log)
@@ -174,3 +177,9 @@ API uses a REST interface and JSON transport.
           "error": null,
           "id": 1234
       }
+
+### GET /view/:id
+- allows the retrieval of a file from the data store
+- requires an id in the URL  
+  e.g. `/api/view/12`
+- returns the document along with the detected mime type of the file
