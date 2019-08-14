@@ -85,6 +85,7 @@ NOTE: both the api and client debug servers can be run simultaneously
   (probably better to use dedicated search solution like ElasticSearch)
 * Would be nice to have a proper logging solution (other than console.log)
 * Custom error handlers for express server
+* Messages could remove after a timer (in addition to clicking the close button)
 
 ## Libraries
 

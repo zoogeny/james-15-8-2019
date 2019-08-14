@@ -11,7 +11,7 @@ function getDocumentSize(size) {
 const Document = (props) => {
     return (
         <div className="document">
-            <a className="document__link" href={ `${ API_URL }/view/${ props.id }`} target="_blank">
+            <a className="document__link" href={ `${ API_URL }/view/${ props.id }`} target="_blank" rel="noopener noreferrer">
                 <h3 className="document__title">{ props.title }</h3>
             </a>
             <div className="document__bottom">
