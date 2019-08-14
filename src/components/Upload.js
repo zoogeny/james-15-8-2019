@@ -6,6 +6,7 @@ const Upload = (props) => {
     const handleFileSelect = (event, initiateUpload) => {
         const file = event.target.files[0]
         initiateUpload(file);
+        event.target.value = null;
     };
 
     return (
