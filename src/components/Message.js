@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import "./Message.scss";
 
 const Message = (props) => {
@@ -26,7 +26,7 @@ const Message = (props) => {
 
 Message.propTypes = {
     messages: PropTypes.arrayOf(PropTypes.shape({
-        type: PropTypes.oneOf(['error', 'message']),
+        type: PropTypes.oneOf(["error", "message"]),
         content: PropTypes.string,
         messageId: PropTypes.number
     })),

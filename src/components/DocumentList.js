@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import Document from "./Document";
 import "./DocumentList.scss";
 
@@ -8,7 +8,7 @@ const getTotalSize = (documentList) => {
         out += parseInt(item.size, 10);
         return out;
     }, 0);
-    return `${ Math.floor(totalSize / 1024) }kb`;
+    return `${ Math.floor(totalSize / 1024) }KB`;
 }
 
 const getDocumentItems = (documentList, initiateDelete) => {
@@ -66,12 +66,13 @@ const getSearchResults = (searchResult, initiateDelete) => {
 }
 
 const DocumentList = (props) => {
+    const documentHeaderDocs = props.searchTerm ? props.searchResult : props.documentList;
     return (
         <div className="documents">
             <div className="documents__header">
-              <h2 className="documents__header__count">{ props.documentList.length } Documents</h2>
+              <h2 className="documents__header__count">{ documentHeaderDocs.length } Documents</h2>
               <div className="documents__header__size">
-                  Total Size: { getTotalSize(props.documentList) }
+                  Total Size: { getTotalSize(documentHeaderDocs) }
               </div>
             </div>
             { getDocumentElement(props.documentList, props.searchTerm, props.searchResult, props.initiateDelete) }

@@ -1,11 +1,11 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import "./Document.scss";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 function getDocumentSize(size) {
-    return `${ Math.floor(size / 1024) }kb`;
+    return `${ Math.floor(size / 1024) }KB`;
 }
 
 const Document = (props) => {

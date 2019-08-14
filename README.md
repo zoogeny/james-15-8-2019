@@ -109,6 +109,12 @@ NOTE: both the api and client debug servers can be run simultaneously
 * ### nodemon
   debug monitoring for express server
 
+* ### enzyme / enzyme-adapter-react-16
+  testing framework for React
+
+* ### chai / sinon
+  testing helpers (for assertions and function spies)
+
 ---
 
 ## API
