@@ -36,14 +36,14 @@ const useDocumentList = (errorHandler: () => {}, messageHandler: () => {}) => {
     }, [ errorHandler ]);
 
     const handleUploadSuccess = (uploadDetails) => {
-        messageHandler("Upload success");
+        messageHandler(`Upload success: ${ uploadDetails.title }`);
         loadList();
     };
 
     const { initiateUpload } = useUpload(handleUploadSuccess, errorHandler);
 
     const handleDeleteSuccess = (deleteDetails) => {
-        messageHandler("Delete success");
+        messageHandler(`Delete success: ${ deleteDetails.title }`);
         loadList();
     };
 

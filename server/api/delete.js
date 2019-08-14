@@ -42,7 +42,8 @@ const deleteDocument = async (req, res) => {
 
     res.json({
         "error": null,
-        id: requestId
+        id: requestId,
+        title: documentToDelete.title
     });
 }
 

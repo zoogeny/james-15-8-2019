@@ -20,8 +20,7 @@ NOTE: This project was bootstrapped with [Create React App](https://github.com/f
 
 * Run the app as an express server:  
   `npm start`  
-  client application is served from: http://localhost:4000  
-  api is served from: http://localhost:4000/api
+  application is served from: http://localhost:4000/
 
 ### Debug application
 
@@ -33,6 +32,8 @@ NOTE: This project was bootstrapped with [Create React App](https://github.com/f
   `npm run start:react`  
   debug client server will run on http://localhost:3000/
 
+NOTE: both the api and client debug servers can be run simultaneously
+
 ### Test application
 
 * To run interactive tests:  
@@ -43,38 +44,44 @@ NOTE: This project was bootstrapped with [Create React App](https://github.com/f
 ### Addressed
 
 * upload form only accepts files with extension .jpg and .png
-* client javascript checks the declared file mime type is jpg or png
-* client javascript checks the file size is less than maximum
-* server javascript checks the file mime type is jpg or png
-* server javascript checks the declared file size is less than maximum
-* server javascript uses `file-types` library to double check mime type
+* client and server checks the declared file mime type is jpg or png
+* client and server checks the file size is less than maximum
+* server uses `file-types` library to double check mime type by inspecting binary
 * database library escapes all data by default to avoid SQL injection
+* react escapes any strings inserted into HTML (e.g. document title)
 
 ### Not Addressed
 
+* HTTPS / Authentication (as per instructions)
 * client doe not check the binary file to confirm mime type before attempting upload
 * server side library used to handle multipart form file uploads saves the
   file to the disk immediately
   (e.g. before any sanity checks have been completed)
+* Express errors are leaked (e.g. some 5xx/4xx errors coming from router)
+* DOS attacks or API spamming (no load testing either)
+* Application logging and monitoring
 
 ## Improvements
 
-* consider other transport formats other than REST  
+* consider other transport formats other than JSON  
   (e.g. GraphQL, gRPC)
-* Server side render using ReactDOMServer
+* Server side render using ReactDOMServer to improve SEO and time to first paint
 * Pagination for long lists
 * Better cross-browser and backward compatibility  
   (e.g. polyfills for libraries like `fetch`, async/await support using babel)
-* More careful consideration of CORS policy
-* Error handling on document load list
+* More careful consideration of CORS policy / cache headers
 * aria attributes for accessibility
 * debouncing search (e.g. avoid typing spam)
 * Better sharing between server & client for shared data  
   (e.g. allowed mime types, max file sizes)
-* Transaction handling for multi-part server request (e.g. delete)
-* Integer ids for documents could be limiting long-term
-* Super simple search using SQL LIKE could be significantly improved
+* Transaction handling for multi-part server request  
+  (e.g. delete from file system and delete from database)
+* Integer ids for documents could be limiting long-term, strings might be a better choice
+* Stable ids: right now id strategy is autoincrement in database so chance of two different images sharing the same id (although never at the same time). Maybe GUID would be a better id strategy.
+* Super simple search using SQL LIKE could be significantly improved  
+  (probably better to use dedicated search solution like ElasticSearch)
 * Would be nice to have a proper logging solution (other than console.log)
+* Custom error handlers for express server
 
 ## Libraries
 
@@ -91,7 +98,7 @@ NOTE: This project was bootstrapped with [Create React App](https://github.com/f
 * ### read-chunk / file-types  
   detect the actual file type from the file binary
 * ### sqlite3
-  basic persistence
+  basic persistence for server api
 
 ### Dev libraries
 
@@ -167,10 +174,3 @@ API uses a REST interface and JSON transport.
           "error": null,
           "id": 1234
       }
-
----
-## Other notes
-
-* This was my first use of React hooks (e.g. `useState` and `useEffect`) and
-  I think I could probable structure some of the application state a little
-  bit more nicely

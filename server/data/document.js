@@ -4,7 +4,7 @@ const db = new sqlite3.Database('./server/data/documents.sqlite3');
 const getAllDocuments = () => {
     const getPromise = new Promise((resolve, reject) => {
         db.all(`
-            SELECT * FROM documents;
+            SELECT id, title, size FROM documents;
             `, {}, (err, rows) => {
                 if (err) {
                     reject(err);
@@ -19,7 +19,7 @@ const getAllDocuments = () => {
 const searchDocuments = (term) => {
     const getDocumentPromise = new Promise((resolve, reject) => {
         db.all(`
-            SELECT * FROM documents WHERE title LIKE $term;
+            SELECT id, title, size FROM documents WHERE title LIKE $term;
         `, {
             "$term": `%${ term }%`
         }, (err, rows) => {
