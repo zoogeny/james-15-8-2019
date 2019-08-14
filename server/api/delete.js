@@ -15,6 +15,14 @@ const deleteDocument = async (req, res) => {
         return;
     }
 
+    if (!documentToDelete) {
+        res.status(404);
+        res.json({
+            "error": `Unable to retrieve document for id: ${ requestId }`
+        });
+        return;
+    }
+
     try {
         fs.unlinkSync(documentToDelete.path);
     } catch(error) {
