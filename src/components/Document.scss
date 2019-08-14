@@ -1,0 +1,17 @@
+.document {
+    padding: 5px;
+
+    &__title {
+        margin-top: 0;
+        margin-bottom: 0;
+        text-align: left;
+    }
+
+    &__size {
+        display: inline-block;
+    }
+
+    &__delete {
+
+    }
+}

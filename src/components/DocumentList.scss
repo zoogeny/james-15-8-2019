@@ -1,0 +1,33 @@
+.documents {
+    &__header {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+
+        &__count {
+
+        }
+
+        &__size {
+
+        }
+    }
+
+    &__list {
+        background: #99f;
+        list-style: none;
+        padding: 5px;
+        margin: 0px;
+
+        display: flex;
+        flex-wrap: wrap;
+
+        &__detail {
+            border: 1px solid black;
+            width: 300px;
+            margin: 5px;
+        }
+    }
+}

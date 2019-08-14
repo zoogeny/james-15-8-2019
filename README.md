@@ -1,68 +1,107 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# James - 15/8/2019
+## Installation
 
-## Available Scripts
+NOTE: This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-In the project directory, you can run:
+### Project setup
 
-### `npm start`
+* install dependencies  
+  `yarn install`  
+  note: `yarn` was the default lockfile created by `create-react-app` so I kept it
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* initialize the database  
+  `npm run init`
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+### Run production version
 
-### `npm test`
+* Build the production client  
+  `npm run build`  
+  output goes to the `build` folder
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Run the app as an express server:  
+  `npm start`  
+  client application is served from: http://localhost:4000  
+  api is served from: http://localhost:4000/api
 
-### `npm run build`
+### Debug application
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* To debug the api server  
+  `npm run start:dev`  
+  debug api server will run on http://localhost:4000/api
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+* To debug the client application (hot reloading of React app)  
+  `npm run start:react`  
+  debug client server will run on http://localhost:3000/
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Test application
 
-### `npm run eject`
+* To run interactive tests:  
+  `npm test`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Security
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Addressed
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+* upload form only accepts files with extension .jpg and .png
+* client javascript checks the declared file mime type is jpg or png
+* client javascript checks the file size is less than maximum
+* server javascript checks the file mime type is jpg or png
+* server javascript checks the declared file size is less than maximum
+* server javascript uses `file-types` library to double check mime type
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+// List security concerns:  
+// - that have been addressed  
+// - that have *not* been addressed
 
-## Learn More
+## Improvements
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* consider other transport formats other than REST  
+  (e.g. GraphQL, gRPC)
+* Server side render using ReactDOMServer
+* Pagination for long lists
+* Better cross-browser and backward compatibility  
+  (e.g. polyfills for libraries like `fetch`, async/await support using babel)
+* More careful consideration of CORS policy
+* Error handling on document load list
+* aria attributes for accessibility
+* debouncing search (e.g. avoid typing spam)
+* Better sharing between server & client for shared data  
+  (e.g. allowed mime types, max file sizes)
+* Transaction handling for multi-part server request (e.g. delete)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Libraries
 
-### Code Splitting
+* ### react / react-dom / react-scripts
+  default installation along with create-react-app
+* ### express
+  for API server URL routing
+* ### cors
+  express middle-ware to handle CORS
+* ### node-sass
+  sass support
+* ### multer
+  handle multi-part form uploads (for file upload)
+* ### read-chunk / file-types  
+  detect the actual file type from the file binary
+* ### sqlite3
+  basic persistence
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+### Dev libraries
 
-### Analyzing the Bundle Size
+* ### nodemon
+  debug monitoring for express server
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+## API
+// Any general observation about the API?
+// document each endpoint using the following template: ```
+### GET /resources
+// Description of the endpoint:
+// - what does the endpoint do?
+// - what does it return?
+// - does it accept specific parameters? ```
+---
+## Other notes
 
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+* This was my first use of React hooks (e.g. `useState` and `useEffect`) and
+  I think I could probable structure some of the application state a little
+  bit more nicely

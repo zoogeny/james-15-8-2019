@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Message from "./components/Message";
+import Search from "./components/Search";
+import Upload from "./components/Upload";
+import DocumentList from "./components/DocumentList";
+
+import useMessages from "./actions/useMessages";
+import useSearch from "./actions/useSearch";
+import useDocumentList from "./actions/useDocumentList";
+
+import "./App.scss";
+
+const App = () => {
+    const { messages, addMessage, addError, clearMessage } = useMessages();
+    const { searchResult, performSearchOnTerm } = useSearch(addError);
+    const { documentList, initiateUpload, initiateDelete } = useDocumentList(addError, addMessage);
+
+    return (
+        <div className="app">
+            <Message
+                messages={ messages }
+                handleClearMessage={ clearMessage } />
+            <div className="controls">
+                <Search
+                    performSearchOnTerm={ performSearchOnTerm } />
+                <Upload
+                    initiateUpload={ initiateUpload } />
+            </div>
+            <DocumentList
+                documentList= { documentList }
+                searchResult={ searchResult.documents }
+                initiateDelete={ initiateDelete } />
+        </div>
+    );
 }
 
 export default App;
