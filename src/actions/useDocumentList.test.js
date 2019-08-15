@@ -1,5 +1,6 @@
 import { expect } from "chai"
 import { assert, stub } from "sinon";
+import { act } from "react-dom/test-utils";
 import { mountWrappedElement, mockFetch, mockFetchNetworkError, mockFetchJsonDecodeError } from "./testHookHelper";
 import useDocumentList from "./useDocumentList";
 
@@ -85,6 +86,57 @@ describe("useDocumentList", () => {
 
         it("loads the document list", () => {
             expect(documentListProps.documentList).to.eql([{ "test": "props" }])
+        });
+    });
+
+    describe("#initiateUpload", () => {
+        beforeEach(async () => {
+            fetchStub = mockFetch(200, {
+                "title": "test"
+            });
+
+            await mountWrappedElement(() => {
+                documentListProps = useDocumentList(errorHandlerStub, successHandlerStub);
+            });
+
+            await act(async () => {
+                documentListProps.initiateUpload({
+                    type: "image/png",
+                    size: 1024
+                });
+            });
+        });
+
+        afterEach(() => {
+            fetchStub.restore();
+        });
+
+        it("calls the success callback", () => {
+            assert.calledWith(successHandlerStub, "Upload success: test");
+        });
+    });
+
+    describe("#initiateDelete", () => {
+        beforeEach(async () => {
+            fetchStub = mockFetch(200, {
+                "title": "test"
+            });
+
+            await mountWrappedElement(() => {
+                documentListProps = useDocumentList(errorHandlerStub, successHandlerStub);
+            });
+
+            await act(async () => {
+                documentListProps.initiateDelete(1);
+            });
+        });
+
+        afterEach(() => {
+            fetchStub.restore();
+        });
+
+        it("calls the success callback", () => {
+            assert.calledWith(successHandlerStub, "Delete success: test");
         });
     });
 });
