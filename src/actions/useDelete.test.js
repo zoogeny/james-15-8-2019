@@ -1,5 +1,5 @@
 import { assert, stub, match } from "sinon";
-import { mockFetch } from "./testHookHelper";
+import { mockFetch, mockFetchNetworkError, mockFetchJsonDecodeError } from "./testHookHelper";
 import useDelete from "./useDelete";
 
 describe("useDelete", () => {
@@ -12,6 +12,21 @@ describe("useDelete", () => {
         successHandlerStub = stub();
         errorHandlerStub = stub();
         initiateDelete = useDelete(successHandlerStub, errorHandlerStub).initiateDelete;
+    });
+
+    describe("when the server is unreachable", () => {
+        beforeEach(async () => {
+            fetchStub = mockFetchNetworkError();
+            await initiateDelete(12);
+        });
+
+        afterEach(() => {
+            fetchStub.restore();
+        });
+
+        it("calls the error handler", () => {
+            assert.calledWith(errorHandlerStub, "Unable to connect to server");
+        });
     });
 
     describe("when the server responds with an error", () => {
@@ -31,13 +46,7 @@ describe("useDelete", () => {
 
     describe("when the server responds with invalid JSON", () => {
         beforeEach(async () => {
-            fetchStub = stub(global, "fetch").returns(
-                Promise.resolve({
-                    status: 200,
-                    json: () => {
-                        throw new Error("bad json")
-                    }
-                }));
+            fetchStub = mockFetchJsonDecodeError();
             await initiateDelete(12);
         });
 

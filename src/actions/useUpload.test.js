@@ -3,7 +3,7 @@ import { act } from "react-dom/test-utils";
 import { expect } from "chai"
 import { assert, stub } from "sinon";
 import { mount } from "enzyme";
-import { mountWrappedElement, mockFetch } from "./testHookHelper";
+import { mountWrappedElement, mockFetch, mockFetchNetworkError, mockFetchJsonDecodeError } from "./testHookHelper";
 import useUpload from "./useUpload";
 
 describe("useSearch", () => {
@@ -60,6 +60,30 @@ describe("useSearch", () => {
         });
     });
 
+    describe("when the server is unreachable", () => {
+        beforeEach(async () => {
+            fetchStub = mockFetchNetworkError()
+            successHandlerStub = stub();
+            errorHandlerStub = stub();
+            await mountWrappedElement(() => {
+                uploadProps = useUpload(successHandlerStub, errorHandlerStub);
+            });
+
+            await act(async () => {
+                const file = fileMock("image/png", 5 * 1024 * 1024);
+                uploadProps.initiateUpload(file);
+            });
+        });
+
+        afterEach(() => {
+            fetchStub.restore();
+        });
+
+        it("calls the error handler", () => {
+            assert.calledWith(errorHandlerStub, "Unable to connect to server");
+        });
+    });
+
     describe("when the server returns an error", () => {
         beforeEach(async () => {
             fetchStub = mockFetch(500, {});
@@ -86,13 +110,7 @@ describe("useSearch", () => {
 
     describe("when the server returns invalid json", () => {
         beforeEach(async () => {
-            fetchStub = stub(global, "fetch").returns(
-                Promise.resolve({
-                    status: 200,
-                    json: () => {
-                        throw new Error("bad json")
-                    }
-                }));
+            fetchStub = mockFetchJsonDecodeError();
             errorHandlerStub = stub();
             await mountWrappedElement(() => {
                 uploadProps = useUpload(successHandlerStub, errorHandlerStub);

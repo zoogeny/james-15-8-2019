@@ -15,7 +15,16 @@ const useDocumentList = (errorHandler: () => {}, messageHandler: () => {}) => {
         // requirements on return types and promises are not valid return types
         const wrappedCall = async () => {
             const url = new URL(`${ API_URL }/list`);
-            const response = await fetch(url);
+
+            let response;
+            try {
+                response = await fetch(url);
+            } catch(error) {
+                errorHandler("Unable to connect to server");
+                return;
+            }
+
+
             if (response.status >= 400) {
                 errorHandler("Unable to load document list");
                 return;

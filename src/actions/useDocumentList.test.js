@@ -1,6 +1,6 @@
 import { expect } from "chai"
 import { assert, stub } from "sinon";
-import { mountWrappedElement, mockFetch } from "./testHookHelper";
+import { mountWrappedElement, mockFetch, mockFetchNetworkError, mockFetchJsonDecodeError } from "./testHookHelper";
 import useDocumentList from "./useDocumentList";
 
 describe("useDocumentList", () => {
@@ -12,6 +12,24 @@ describe("useDocumentList", () => {
     beforeEach(() => {
         errorHandlerStub = stub();
         successHandlerStub = stub();
+    });
+
+    describe("when the server is unreachable", () => {
+        beforeEach(async () => {
+            fetchStub = mockFetchNetworkError();
+
+            await mountWrappedElement(() => {
+                documentListProps = useDocumentList(errorHandlerStub, successHandlerStub);
+            });
+        });
+
+        afterEach(() => {
+            fetchStub.restore();
+        });
+
+        it("calls the error handler", () => {
+            assert.calledWith(errorHandlerStub, "Unable to connect to server");
+        });
     });
 
     describe("when the server returns an error", () => {
@@ -34,13 +52,7 @@ describe("useDocumentList", () => {
 
     describe("when the server returns invalid json", () => {
         beforeEach(async () => {
-            fetchStub = stub(global, "fetch").returns(
-                Promise.resolve({
-                    status: 200,
-                    json: () => {
-                        throw new Error("bad json")
-                    }
-                }));
+            fetchStub = mockFetchJsonDecodeError();
 
             await mountWrappedElement(() => {
                 documentListProps = useDocumentList(errorHandlerStub, successHandlerStub);

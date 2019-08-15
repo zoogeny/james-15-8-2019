@@ -19,8 +19,24 @@ export const mockFetch = (status, response) => {
         return Promise.resolve({
             status,
             json: () => {
-                return Promise.resolve(response)
+                return Promise.resolve(response);
             }
         });
     });
+};
+
+export const mockFetchNetworkError = () => {
+    return stub(global, "fetch").callsFake(() => {
+        throw new Error("Network connection failure");
+    });
+}
+
+export const mockFetchJsonDecodeError = () => {
+    return stub(global, "fetch").returns(
+        Promise.resolve({
+            status: 200,
+            json: () => {
+                throw new Error("bad json");
+            }
+        }));
 };

@@ -3,13 +3,35 @@ import { act } from "react-dom/test-utils";
 import { expect } from "chai"
 import { assert, stub } from "sinon";
 import { mount } from "enzyme";
-import { mountWrappedElement, mockFetch } from "./testHookHelper";
+import { mountWrappedElement, mockFetch, mockFetchNetworkError, mockFetchJsonDecodeError } from "./testHookHelper";
 import useSearch from "./useSearch";
 
 describe("useSearch", () => {
     let fetchStub;
     let searchProps;
     let errorHandlerStub;
+
+    describe("when the server is unreachable", () => {
+        beforeEach(async () => {
+            fetchStub = mockFetchNetworkError();
+            errorHandlerStub = stub();
+            await mountWrappedElement(() => {
+                searchProps = useSearch(errorHandlerStub);
+            });
+
+            act(() => {
+                searchProps.performSearchOnTerm("whatever");
+            });
+        });
+
+        afterEach(() => {
+            fetchStub.restore();
+        });
+
+        it("calls the error handler", () => {
+            assert.calledWith(errorHandlerStub, "Unable to connect to server");
+        });
+    });
 
     describe("when the server returns an error", () => {
         beforeEach(async () => {
@@ -35,13 +57,7 @@ describe("useSearch", () => {
 
     describe("when the server returns invalid json", () => {
         beforeEach(async () => {
-            fetchStub = stub(global, "fetch").returns(
-                Promise.resolve({
-                    status: 200,
-                    json: () => {
-                        throw new Error("bad json")
-                    }
-                }));
+            fetchStub = mockFetchJsonDecodeError();
             errorHandlerStub = stub();
             await mountWrappedElement(() => {
                 searchProps = useSearch(errorHandlerStub);

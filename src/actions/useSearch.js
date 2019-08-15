@@ -27,7 +27,14 @@ const useSearch = (errorHandler: () => {}) => {
         const url = new URL(`${ API_URL }/search`);
         url.searchParams.append("term", trimmedSearchTerm);
 
-        const response = await fetch(url);
+        let response;
+        try {
+            response = await fetch(url);
+        } catch(error) {
+            errorHandler("Unable to connect to server");
+            return;
+        }
+
         if (response.status >= 400) {
             errorHandler("Unable to perform search");
             return;

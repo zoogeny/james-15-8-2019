@@ -26,10 +26,16 @@ const useUpload = (handleUploadSuccess: () => {}, errorHandler: () => {}) => {
         const data = new FormData();
         data.append("upload", file);
 
-        const response = await fetch(url, {
-            method: "POST",
-            body: data // This is your file object
-        });
+        let response;
+        try {
+            response = await fetch(url, {
+                method: "POST",
+                body: data // This is your file object
+            });
+        } catch(error) {
+            errorHandler("Unable to connect to server");
+            return;
+        }
 
         let responseJson;
 
