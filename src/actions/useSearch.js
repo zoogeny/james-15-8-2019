@@ -4,7 +4,9 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 const useSearch = (errorHandler: () => {}) => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [searchResult, setSearchResult] = useState([]);
+    const [searchResult, setSearchResult] = useState({
+        documents: []
+    });
 
     const performSearchOnTerm = async (term) => {
         const trimmedSearchTerm = term.trim();
@@ -16,13 +18,14 @@ const useSearch = (errorHandler: () => {}) => {
 
         if (trimmedSearchTerm === "") {
             setSearchTerm("");
-            setSearchResult([]);
+            setSearchResult({
+                documents: []
+            });
             return;
         }
 
         const url = new URL(`${ API_URL }/search`);
-        const params = { term: trimmedSearchTerm };
-        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+        url.searchParams.append("term", trimmedSearchTerm);
 
         const response = await fetch(url);
         if (response.status >= 400) {
@@ -38,7 +41,9 @@ const useSearch = (errorHandler: () => {}) => {
             return;
         }
 
-        setSearchResult(responseJson);
+        setSearchResult({
+            documents: responseJson.documents
+        });
     }
 
     return { searchTerm, searchResult, performSearchOnTerm }
